@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="kn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kannada Worksheet Generator - ಕನ್ನಡ ವರ್ಕ್‌ಶೀಟ್ ಜನರೇಟರ್</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- TOP NAVBAR -->
+        <header class="app-header">
+            <div class="brand-title">
+                <span>📖 ಕನ್ನಡ Worksheet Generator</span>
+                <span class="brand-badge">Primary School v1.0</span>
+            </div>
+            <div class="action-bar">
+                <button id="btn-randomize-all" class="btn btn-outline" title="ಮತ್ತೆ Randomize ಮಾಡಿ">🎲 Randomize</button>
+                <button id="btn-save-template" class="btn btn-secondary">💾 Save Template</button>
+                <button id="btn-print-pdf" class="btn btn-primary" title="Print to A4 Paper / Save PDF">🖨️ Print Worksheet</button>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT (SIDEBAR + PREVIEW) -->
+        <div class="app-main">
+            <!-- SIDEBAR CONTROL PANEL -->
+            <aside class="app-sidebar">
+                <nav class="sidebar-tabs">
+                    <button class="tab-btn active" data-tab="tab-builder">📜 Builder</button>
+                    <button class="tab-btn" data-tab="tab-words">📚 ಶಬ್ದ ಬ್ಯಾಂಕ್</button>
+                    <button class="tab-btn" data-tab="tab-stories">📖 ಕಥೆ ಬ್ಯಾಂಕ್</button>
+                    <button class="tab-btn" data-tab="tab-saved">💾 Saved</button>
+                </nav>
+
+                <!-- TAB 1: WORKSHEET BUILDER -->
+                <div id="tab-builder" class="tab-content active">
+                    <!-- GLOBAL SETTINGS -->
+                    <div class="panel-card">
+                        <h4>⚙️ Worksheet Header & Layout</h4>
+                        
+                        <div class="form-group">
+                            <label>ಶಾಲೆಯ ಹೆಸರು / School Name</label>
+                            <input type="text" id="setting-school-name" class="form-control" value="SUCCESS SCHOOL, INDI">
+                        </div>
+                        <div class="form-group">
+                            <label>ಉಪ ಶೀರ್ಷಿಕೆ / Subtitle</label>
+                            <input type="text" id="setting-school-subtitle" class="form-control" value="English Medium">
+                        </div>
+                        <div class="form-group">
+                            <label>ವರ್ಕ್‌ಶೀಟ್ ಶೀರ್ಷಿಕೆ / Title</label>
+                            <input type="text" id="setting-worksheet-title" class="form-control" value="ಕನ್ನಡ ಅಭ್ಯಾಸ ಹಾಳೆ (Kannada Practice Worksheet)">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>ತರಗತಿ / Class</label>
+                                <input type="text" id="setting-class-grade" class="form-control" value="Class 1">
+                            </div>
+                            <div class="form-group">
+                                <label>ವಿಭಾಗ / Section</label>
+                                <input type="text" id="setting-section" class="form-control" value="A">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Paper Orientation</label>
+                                <select id="setting-orientation" class="form-control">
+                                    <option value="portrait" selected>A4 Portrait</option>
+                                    <option value="landscape">A4 Landscape</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>ಅಕ್ಷರದ ಸೈಜ್ / Font Size</label>
+                                <select id="setting-font-size" class="form-control">
+                                    <option value="small">Small</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="large">Large</option>
+                                    <option value="extra-large">Extra Large</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Tracing Style</label>
+                                <select id="setting-tracing-style" class="form-control">
+                                    <option value="dotted" selected>░ Dotted Tracing (ಚುಕ್ಕಿ)</option>
+                                    <option value="guide">░ Light Gray Guide</option>
+                                    <option value="outline">⬜ Outline Stroke</option>
+                                    <option value="normal_blank">✏️ Sample + Blank</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Options</label>
+                                <div style="display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; margin-top: 4px;">
+                                    <label><input type="checkbox" id="setting-show-answers"> 🔑 Show Answer Key</label>
+                                    <label><input type="checkbox" id="setting-show-page-num" checked> 📄 Page Numbers</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ADD SECTION -->
+                    <div class="panel-card">
+                        <h4>➕ Section ಸೇರಿಸಿ</h4>
+                        <div class="form-group">
+                            <select id="select-module-type" class="form-control">
+                                <option value="">-- Module ಆಯ್ಕೆ ಮಾಡಿ --</option>
+                                <option value="swaragalu">1. ಸ್ವರಗಳು (Vowels Tracing)</option>
+                                <option value="vyanjanagalu">2. ವ್ಯಂಜನಗಳು (Consonants Tracing)</option>
+                                <option value="kagunita">3. ಬಳ್ಳಿಗಳು / ಗುಣಿತಾಕ್ಷರ (Kagunita)</option>
+                                <option value="words2Letter">4. ೨ ಅಕ್ಷರದ ಪದಗಳು (2-Letter Words)</option>
+                                <option value="words3Letter">5. ೩ ಅಕ್ಷರದ ಪದಗಳು (3-Letter Words)</option>
+                                <option value="words4Letter">6. ೪ ಅಕ್ಷರದ ಪದಗಳು (4-Letter Words)</option>
+                                <option value="wordsSajati">7. ಸಜಾತಿ ಒತ್ತಕ್ಷರ ಪದಗಳು</option>
+                                <option value="wordsVijati">8. ವಿಜಾತಿ ಒತ್ತಕ್ಷರ ಪದಗಳು</option>
+                                <option value="wordsBahu">9. ಬಹು ಒತ್ತಕ್ಷರ ಪದಗಳು</option>
+                                <option value="missingLetters">10. ಬಿಟ್ಟು ಹೋದ ಅಕ್ಷರಗಳನ್ನು ಬರೆಯಿರಿ</option>
+                                <option value="wordFormation">11. ಅಕ್ಷರಗಳನ್ನು ಜೋಡಿಸಿ ಶಬ್ದ ರಚಿಸಿ</option>
+                                <option value="dottedTracing">12. ಚುಕ್ಕಿ ಅಕ್ಷರಗಳು (Dotted Letters)</option>
+                                <option value="twoLineWriting">13. ಎರಡು ಗೆರೆಗಳ ಮಧ್ಯೆ ಬರೆಯಿರಿ (2-Line)</option>
+                                <option value="storyComprehension">14. ಕಥೆ ಓದಿ ಪ್ರಶ್ನೆಗಳಿಗೆ ಉತ್ತರಿಸಿ (Story)</option>
+                            </select>
+                        </div>
+                        <button id="btn-add-section" class="btn btn-primary" style="width: 100%;">+ Add Section to Worksheet</button>
+                    </div>
+
+                    <!-- ACTIVE SECTIONS LIST -->
+                    <div class="panel-card">
+                        <h4>🧩 Active Worksheet Sections</h4>
+                        <div id="active-sections-container">
+                            <!-- Section cards generated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: QUESTION / WORD BANK MANAGER -->
+                <div id="tab-words" class="tab-content">
+                    <div class="panel-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h4>📚 Word Bank</h4>
+                            <button id="btn-open-add-word" class="btn btn-primary btn-sm">+ ಹೊಸ ಶಬ್ದ ಸೇರಿಸಿ</button>
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="text" id="search-words" class="form-control" placeholder="🔍 ಶಬ್ದ ಹುಡುಕಿ (Search words)...">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <select id="filter-word-category" class="form-control">
+                                    <option value="words2Letter">೨ ಅಕ್ಷರದ ಪದಗಳು</option>
+                                    <option value="words3Letter" selected>೩ ಅಕ್ಷರದ ಪದಗಳು</option>
+                                    <option value="words4Letter">೪ ಅಕ್ಷರದ ಪದಗಳು</option>
+                                    <option value="wordsSajati">ಸಜಾತಿ ಒತ್ತಕ್ಷರ</option>
+                                    <option value="wordsVijati">ವಿಜಾತಿ ಒತ್ತಕ್ಷರ</option>
+                                    <option value="wordsBahu">ಬಹು ಒತ್ತಕ್ಷರ</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="word-bank-list" style="max-height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px;">
+                            <!-- Word list rendering -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: STORY BANK MANAGER -->
+                <div id="tab-stories" class="tab-content">
+                    <div class="panel-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                            <h4>📖 Story Bank</h4>
+                            <button id="btn-open-add-story" class="btn btn-primary btn-sm">+ ಹೊಸ ಕಥೆ ಸೇರಿಸಿ</button>
+                        </div>
+
+                        <div id="story-bank-list" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Story list rendering -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 4: SAVED WORKSHEETS -->
+                <div id="tab-saved" class="tab-content">
+                    <div class="panel-card">
+                        <h4>💾 Saved Templates</h4>
+                        <div id="saved-templates-list" style="display: flex; flex-direction: column; gap: 10px;">
+                            <!-- Saved template rendering -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- LIVE A4 PREVIEW AREA -->
+            <main class="preview-container">
+                <div class="preview-toolbar">
+                    <span><strong>A4 Live Preview</strong> (Print View Fit)</span>
+                    <button id="btn-preview-print" class="btn btn-primary btn-sm">🖨️ Print Worksheet</button>
+                </div>
+                
+                <div id="worksheet-render-canvas">
+                    <!-- A4 Page generated dynamically by RenderEngine -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL 1: ADD NEW WORD -->
+    <div id="modal-add-word" class="modal-overlay">
+        <div class="modal-card">
+            <h3>+ ಹೊಸ ಶಬ್ದ ಸೇರಿಸಿ (Add Custom Word)</h3>
+            <div class="form-group">
+                <label>ಕನ್ನಡ ಶಬ್ದ (Word in Kannada)</label>
+                <input type="text" id="new-word-input" class="form-control" placeholder="ಉದಾ: ಕಮಲ, ಭಾರತ, ಸಂಸ್ಕೃತಿ...">
+            </div>
+            <div class="form-group">
+                <label>ವರ್ಗ / Category</label>
+                <select id="new-word-category" class="form-control">
+                    <option value="words2Letter">೨ ಅಕ್ಷರದ ಪದ</option>
+                    <option value="words3Letter" selected>೩ ಅಕ್ಷರದ ಪದ</option>
+                    <option value="words4Letter">೪ ಅಕ್ಷರದ ಪದ</option>
+                    <option value="wordsSajati">ಸಜಾತಿ ಒತ್ತಕ್ಷರ</option>
+                    <option value="wordsVijati">ವಿಜಾತಿ ಒತ್ತಕ್ಷರ</option>
+                    <option value="wordsBahu">ಬಹು ಒತ್ತಕ್ಷರ</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Difficulty</label>
+                <select id="new-word-difficulty" class="form-control">
+                    <option value="easy">Easy (ಸುಲಭ)</option>
+                    <option value="medium" selected>Medium (ಮಧ್ಯಮ)</option>
+                    <option value="hard">Hard (ಕಠಿಣ)</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancel</button>
+                <button id="btn-save-new-word" class="btn btn-primary">Save Word</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ADD NEW STORY -->
+    <div id="modal-add-story" class="modal-overlay">
+        <div class="modal-card" style="width: 600px;">
+            <h3>+ ಹೊಸ ಕಥೆ ಸೇರಿಸಿ (Add Custom Story)</h3>
+            <div class="form-group">
+                <label>ಕಥೆಯ ಶೀರ್ಷಿಕೆ / Title</label>
+                <input type="text" id="new-story-title" class="form-control" placeholder="ಉದಾ: ಕಾಗೆ ಮತ್ತು ನರಿ...">
+            </div>
+            <div class="form-group">
+                <label>ಕಥೆ / Story Content (1-2 Paragraphs)</label>
+                <textarea id="new-story-content" class="form-control" rows="5" placeholder="ಕಥೆಯ ವಿವರಗಳನ್ನು ಇಲ್ಲಿ ಬರೆಯಿರಿ..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>ಪ್ರಶ್ನೆಗಳು / Questions (5 Questions)</label>
+                <input type="text" id="new-story-q1" class="form-control" placeholder="ಪ್ರಶ್ನೆ 1" style="margin-bottom: 4px;">
+                <input type="text" id="new-story-q2" class="form-control" placeholder="ಪ್ರಶ್ನೆ 2" style="margin-bottom: 4px;">
+                <input type="text" id="new-story-q3" class="form-control" placeholder="ಪ್ರಶ್ನೆ 3" style="margin-bottom: 4px;">
+                <input type="text" id="new-story-q4" class="form-control" placeholder="ಪ್ರಶ್ನೆ 4" style="margin-bottom: 4px;">
+                <input type="text" id="new-story-q5" class="form-control" placeholder="ಪ್ರಶ್ನೆ 5">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary modal-close">Cancel</button>
+                <button id="btn-save-new-story" class="btn btn-primary">Save Story</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/data.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/builder.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
